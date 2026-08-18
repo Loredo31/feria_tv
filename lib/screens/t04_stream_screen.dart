@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mi_feria_inteligente/data/mock_data.dart';
+import 'package:provider/provider.dart';
+import 'package:mi_feria_inteligente/providers/tv_state.dart';
 import 'package:mi_feria_inteligente/widgets/widgets.dart';
 
 /// Streaming desde el escenario. Se activa automáticamente desde el panel web
@@ -10,6 +11,8 @@ class T04StreamScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tvState = context.watch<TvState>();
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -35,15 +38,30 @@ class T04StreamScreen extends StatelessWidget {
             bottom: 24,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
               child: Row(
                 children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(currentActivity.title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text(currentActivity.place, style: const TextStyle(color: Colors.white60)),
+                        Text(
+                          tvState.currentActivity.title,
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
+                        ),
+                        Text(
+                          tvState.currentActivity.place,
+                          style: const TextStyle(color: Colors.black54),
+                        ),
                       ],
                     ),
                   ),

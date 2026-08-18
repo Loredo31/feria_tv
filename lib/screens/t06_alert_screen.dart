@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mi_feria_inteligente/data/mock_data.dart';
+import 'package:provider/provider.dart';
+import 'package:mi_feria_inteligente/providers/tv_state.dart';
 import 'package:mi_feria_inteligente/models/feria_alert.dart';
 import 'package:mi_feria_inteligente/widgets/widgets.dart';
 
 /// Máxima prioridad: interrumpe cualquier contenido. En producción solo el
 /// panel web del organizador puede desactivarla; aquí se simula un cierre.
 class T06AlertScreen extends StatelessWidget {
-  const T06AlertScreen({super.key, this.alert = demoAlert});
+  const T06AlertScreen({super.key, required this.alert});
   final FeriaAlert alert;
 
   @override
@@ -36,7 +36,11 @@ class T06AlertScreen extends StatelessWidget {
                 const SizedBox(height: 40),
                 // En el sistema real este botón no existe: solo el panel web
                 // del organizador puede cerrar la alerta. Se deja para demo.
-                TvButton(label: 'Simular cierre (solo panel web)', icon: Icons.admin_panel_settings, onSelect: () => context.go('/agenda')),
+                TvButton(
+                  label: 'Simular cierre (solo panel web)',
+                  icon: Icons.admin_panel_settings,
+                  onSelect: () => context.read<TvState>().dismissAlert(),
+                ),
               ],
             ),
           ),

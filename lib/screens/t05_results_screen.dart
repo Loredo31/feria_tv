@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:mi_feria_inteligente/data/mock_data.dart';
+import 'package:provider/provider.dart';
+import 'package:mi_feria_inteligente/providers/tv_state.dart';
 import 'package:mi_feria_inteligente/models/models.dart';
 import 'package:mi_feria_inteligente/widgets/widgets.dart';
 
@@ -11,8 +12,11 @@ class T05ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final total = voteResults.fold<int>(0, (sum, v) => sum + v.votes);
-    final winner = voteResults.isEmpty ? null : voteResults.reduce((a, b) => a.votes >= b.votes ? a : b);
+    final tvState = context.watch<TvState>();
+    final results = tvState.voteResults;
+    
+    final total = results.fold<int>(0, (sum, v) => sum + v.votes);
+    final winner = results.isEmpty ? null : results.reduce((a, b) => a.votes >= b.votes ? a : b);
     final colors = [Colors.redAccent, Colors.amber, Colors.lightGreen, Colors.blueAccent];
 
     return Scaffold(
@@ -22,27 +26,27 @@ class T05ResultsScreen extends StatelessWidget {
           child: Column(
             children: [
               const Text('Resultados de Votación', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-              const Text('¿Cuál fue el mejor stand?', style: TextStyle(color: Colors.white60, fontSize: 18)),
+              Text(tvState.pollQuestion, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 18)),
               const SizedBox(height: 32),
               Expanded(
-                child: voteResults.isEmpty
+                child: results.isEmpty
                     ? const Center(
                         child: Text(
                           'No hay votos registrados',
-                          style: TextStyle(color: Colors.white30, fontSize: 20),
+                          style: TextStyle(color: Colors.black38, fontSize: 20),
                         ),
                       )
                     : Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          for (var i = 0; i < voteResults.length; i++)
-                            _bar(context, voteResults[i], total, colors[i % colors.length]),
+                          for (var i = 0; i < results.length; i++)
+                            _bar(context, results[i], total, colors[i % colors.length]),
                         ],
                       ),
               ),
               const SizedBox(height: 24),
-              if (winner != null)
+              if (winner != null && winner.votes > 0)
                 FadeInUp(
                   child: Text(
                     '${winner.label.toUpperCase()} — GANADOR',
@@ -76,7 +80,14 @@ class T05ResultsScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        SizedBox(width: 100, child: Text(v.label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, color: Colors.white70))),
+        SizedBox(
+          width: 100,
+          child: Text(
+            v.label,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurfaceVariant),
+          ),
+        ),
       ],
     );
   }

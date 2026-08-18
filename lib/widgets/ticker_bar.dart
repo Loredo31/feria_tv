@@ -36,7 +36,7 @@ class _TickerBarState extends State<TickerBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 44,
-      color: Colors.black.withValues(alpha: 0.5),
+      color: Colors.black.withValues(alpha: 0.05),
       alignment: Alignment.centerLeft,
       child: SingleChildScrollView(
         controller: _controller,
@@ -46,7 +46,7 @@ class _TickerBarState extends State<TickerBar> {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
             widget.text,
-            style: const TextStyle(color: Colors.white70, fontSize: 15),
+            style: const TextStyle(color: Colors.black87, fontSize: 15),
           ),
         ),
       ),

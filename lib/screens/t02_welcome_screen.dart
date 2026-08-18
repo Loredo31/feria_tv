@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:mi_feria_inteligente/data/mock_data.dart';
+import 'package:provider/provider.dart';
+import 'package:mi_feria_inteligente/providers/tv_state.dart';
 import 'package:mi_feria_inteligente/widgets/widgets.dart';
 
 /// Pantalla de espera entre actividades: cuenta regresiva + slideshow + ticker.
@@ -20,9 +21,9 @@ class _T02WelcomeScreenState extends State<T02WelcomeScreen> {
   late final Timer _slideshow;
 
   final _gradients = const [
-    [Color(0xFF1E3A8A), Color(0xFF2563EB)],
-    [Color(0xFF7C2D12), Color(0xFFEA580C)],
-    [Color(0xFF166534), Color(0xFF22C55E)],
+    [Color(0xFFE0F2FE), Color(0xFFBAE6FD)], // Light blue
+    [Color(0xFFFFEDD5), Color(0xFFFED7AA)], // Light orange
+    [Color(0xFFDCFCE7), Color(0xFFBBF7D0)], // Light green
   ];
 
   @override
@@ -50,6 +51,7 @@ class _T02WelcomeScreenState extends State<T02WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final h = _left.inHours, m = _left.inMinutes % 60, s = _left.inSeconds % 60;
+    final tvState = context.watch<TvState>();
 
     return Scaffold(
       body: Stack(
@@ -58,7 +60,7 @@ class _T02WelcomeScreenState extends State<T02WelcomeScreen> {
             duration: const Duration(milliseconds: 800),
             decoration: BoxDecoration(gradient: LinearGradient(colors: _gradients[_slide], begin: Alignment.topLeft, end: Alignment.bottomRight)),
           ),
-          Container(color: Colors.black.withValues(alpha: 0.45)),
+          Container(color: Colors.white.withValues(alpha: 0.2)),
           SafeArea(
             child: Column(
               children: [
@@ -68,9 +70,12 @@ class _T02WelcomeScreenState extends State<T02WelcomeScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(eventName, style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
+                          Text(
+                            tvState.eventName,
+                            style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                          ),
                           const SizedBox(height: 32),
-                          const Text('Próxima actividad en:', style: TextStyle(color: Colors.white70, fontSize: 18)),
+                          const Text('Próxima actividad en:', style: TextStyle(color: Color(0xFF334155), fontSize: 18)),
                           const SizedBox(height: 12),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -112,11 +117,21 @@ class _T02WelcomeScreenState extends State<T02WelcomeScreen> {
     return Container(
       width: 90,
       padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.85),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         children: [
-          Text(value, style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
-          Text(label, style: const TextStyle(fontSize: 13, color: Colors.white60)),
+          Text(value, style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
+          Text(label, style: const TextStyle(fontSize: 13, color: Color(0xFF475569))),
         ],
       ),
     );

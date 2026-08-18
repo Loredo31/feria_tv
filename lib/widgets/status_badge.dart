@@ -9,8 +9,8 @@ class StatusBadge extends StatelessWidget {
         ActivityStatus.enCurso => ('EN VIVO', Colors.green),
         ActivityStatus.cancelado => ('CANCELADO', Colors.red),
         ActivityStatus.reprogramado => ('REPROGRAMADO', Colors.amber),
-        ActivityStatus.finalizado => ('FINALIZADO', Colors.white38),
-        ActivityStatus.proximo => ('PRÓXIMO', Colors.white54),
+        ActivityStatus.finalizado => ('FINALIZADO', Colors.grey),
+        ActivityStatus.proximo => ('PRÓXIMO', Colors.blueGrey),
       };
 
   @override

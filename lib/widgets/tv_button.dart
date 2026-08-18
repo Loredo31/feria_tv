@@ -47,20 +47,24 @@ class _TvButtonState extends State<TvButton> {
           duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           decoration: BoxDecoration(
-            color: _focused ? primary : Colors.white.withValues(alpha: 0.08),
+            color: _focused ? primary : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: _focused ? primary : Colors.white24, width: 2),
+            border: Border.all(color: _focused ? primary : Colors.black.withValues(alpha: 0.08), width: 2),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, size: 20, color: Colors.white),
+                Icon(widget.icon, size: 20, color: _focused ? Colors.white : Theme.of(context).colorScheme.onSurface),
                 const SizedBox(width: 8),
               ],
               Text(
                 widget.label,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+                style: TextStyle(
+                  color: _focused ? Colors.white : Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
               ),
             ],
           ),
